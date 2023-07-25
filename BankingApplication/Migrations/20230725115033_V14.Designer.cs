@@ -4,6 +4,7 @@ using BankingApplication.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankingApplication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230725115033_V14")]
+    partial class V14
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,6 +40,18 @@ namespace BankingApplication.Migrations
                     b.HasKey("AccountTypeId");
 
                     b.ToTable("AccountTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            AccountTypeId = 1,
+                            Name = "Liability"
+                        },
+                        new
+                        {
+                            AccountTypeId = 2,
+                            Name = "Asset"
+                        });
                 });
 
             modelBuilder.Entity("BankingApplication.Models.BankAccount", b =>
@@ -109,6 +124,7 @@ namespace BankingApplication.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PaymentMethodId")
@@ -157,6 +173,7 @@ namespace BankingApplication.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PaymentMethodId")

@@ -4,6 +4,7 @@ using BankingApplication.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankingApplication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230725081213_V5")]
+    partial class V5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,6 +40,18 @@ namespace BankingApplication.Migrations
                     b.HasKey("AccountTypeId");
 
                     b.ToTable("AccountTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            AccountTypeId = 1,
+                            Name = "Liability"
+                        },
+                        new
+                        {
+                            AccountTypeId = 2,
+                            Name = "Asset"
+                        });
                 });
 
             modelBuilder.Entity("BankingApplication.Models.BankAccount", b =>
@@ -67,12 +82,13 @@ namespace BankingApplication.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OpeningDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("TotalBalance")
+                    b.Property<decimal?>("TotalBalance")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("BankAccountId");
@@ -109,6 +125,7 @@ namespace BankingApplication.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PaymentMethodId")
@@ -157,6 +174,7 @@ namespace BankingApplication.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MiddleName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PaymentMethodId")
@@ -225,7 +243,7 @@ namespace BankingApplication.Migrations
             modelBuilder.Entity("BankingApplication.Models.BankAccount", b =>
                 {
                     b.HasOne("BankingApplication.Models.AccountType", "AccountType")
-                        .WithMany("BankAccount")
+                        .WithMany()
                         .HasForeignKey("AccountTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -269,11 +287,6 @@ namespace BankingApplication.Migrations
                     b.Navigation("BankAccount");
 
                     b.Navigation("PaymentMethod");
-                });
-
-            modelBuilder.Entity("BankingApplication.Models.AccountType", b =>
-                {
-                    b.Navigation("BankAccount");
                 });
 #pragma warning restore 612, 618
         }

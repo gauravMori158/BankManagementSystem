@@ -1,14 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankingApplication.Models
 {
     public class BankAccount
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BankAccountId { get; set; }
         [Required]
-        public string FirstName { get;}
-        public string MiddleName{ get; set; }
+        public string FirstName { get; set; }
+        public string? MiddleName{ get; set; }
         [Required]
         public string LastName { get; set; }
         [Required]
@@ -17,11 +19,15 @@ namespace BankingApplication.Models
         public string AccountNumber { get; set; }
         [Required]
         public DateTime OpeningDate{ get; set; }
-        public DateTime ClosingDate{ get; set; }
-        [Required]
-        public Decimal TotalBalance { get; set; }
 
+        public DateTime? ClosingDate{ get; set; }
+         
+        public decimal TotalBalance { get; set; }
+        [Required]
+        public int AccountTypeId { get; set; }
+        [Required]
         public AccountType AccountType { get; set; }
+
 
 
 
