@@ -23,7 +23,7 @@ namespace BankingApplication.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-
+            //For Bank Account View
             ViewBag.AccountTypeId = new SelectList(bankAccountRepo.GetAccountType(), "AccountTypeId", "Name");
 
             return View();
