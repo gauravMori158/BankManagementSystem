@@ -10,6 +10,15 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+
+      
+        @{
+            if(ViewBag.Flag)
+            {
+                <Text>You Have Crossed Transection Limit !!</Text>
+            }
+            else {
+
         <form asp-action="MoneyTransfer">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -29,13 +38,13 @@
             </div>
            
             <div class="form-group">
-                <label asp-for="TransactionType" class="control-label"></label>
-                <select asp-for="TransactionType" class="form-control" asp-items="Html.GetEnumSelectList<TransactionType>()"></select>
+                <label asp-for="Category" class="control-label"></label>
+                <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<Category>()"></select>
             </div>
          
             <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<Category>()"></select>
+                <label asp-for="TransactionType" class="control-label"></label>
+                <select asp-for="TransactionType" class="form-control" asp-items="Html.GetEnumSelectList<TransactionType>()"></select>
             </div>
            
             <div class="form-group">
@@ -60,9 +69,10 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+    
+}}
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

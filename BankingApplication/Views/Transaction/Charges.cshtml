@@ -1,0 +1,87 @@
+﻿@model IEnumerable<BankingApplication.Models.BankAccountPosting>
+@using BankingApplication.Enums
+@{
+    ViewData["Title"] = "Charges";
+}
+
+<h1>Charges</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Transactiontype)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentMethod)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankAccount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+                @{
+                    string Category = Enum.GetName(typeof(Category), Convert.ToInt32(item.Category)).ToString();
+                    string TransactionType = Enum.GetName(typeof(TransactionType), Convert.ToInt32(item.Transactiontype)).ToString();
+                }
+            <td>
+                    @Html.DisplayFor(modelItem => TransactionType)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentMethod.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankAccount.AccountNumber)
+            </td>
+           @* <td>
+                <a asp-action="Edit" asp-route-id="@item.BankAccountPostingId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BankAccountPostingId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BankAccountPostingId">Delete</a>
+            </td>*@
+        </tr>
+}
+    </tbody>
+</table>

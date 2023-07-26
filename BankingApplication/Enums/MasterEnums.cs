@@ -1,12 +1,12 @@
 ﻿namespace BankingApplication.Enums
 {
-    public enum Category
+    public enum TransactionType
     {
         Credit=1,
         Debit=2
     }
 
-    public enum TransactionType
+    public enum Category
     {
         Opening_Balance =1,
         Bank_Interest =2,

@@ -31,17 +31,6 @@ namespace BankingApplication.Models
         public BankAccount BankAccount { get; set; }
         [Required]
         public int BankAccountId { get; set; }
-
-        /*
-Transaction Person First Name
-Transaction Person Middle Name
-Transaction Person Last Name
-TransactionType => Credit or Debit
-Category => Bank Interest, Bank Charges
-Amount => upto 6 decimal places
-TransactionDate
-PaymentMethod_FK
-BankAccount_FK
-         */
+ 
     }
 }

@@ -17,18 +17,18 @@ namespace BankingApplication.Models.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<AccountType>().HasData(
-            //    new AccountType()
-            //    {   
-            //        AccountTypeId=1,
-            //        Name = "Liability"
-            //    },
-            //   new AccountType()
-            //   {  
-            //       AccountTypeId=2,
-            //       Name = "Asset"
-            //   }
-            //);
+            modelBuilder.Entity<AccountType>().HasData(
+                new AccountType()
+                {
+                    AccountTypeId = 1,
+                    Name = "Liability"
+                },
+               new AccountType()
+               {
+                   AccountTypeId = 2,
+                   Name = "Asset"
+               }
+            );
 
             modelBuilder.Entity<PaymentMethod>().HasData
              (

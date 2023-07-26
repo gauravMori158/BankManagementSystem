@@ -1,4 +1,7 @@
+using BankingApplication.Interface;
+using BankingApplication.Models;
 using BankingApplication.Models.Database;
+using BankingApplication.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(option=>option.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
-
+builder.Services.AddScoped<IBankAccountRepo, BankAccountRepo>();
+builder.Services.AddScoped<ITransactionRepo, TransactionRepo>();
+builder.Services.AddScoped<BankAccountPosting>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +32,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=BankAccount}/{action=Index}/{id?}");
 
 app.Run();
