@@ -18,13 +18,12 @@ namespace BankingApplication.Controllers
         private readonly ITransactionRepo bankTransactionRepo;
         private readonly BankAccountPosting bankAccountPosting;
 
-        public TransactionController(ILogger<TransactionController> logger,
-                                     IConfiguration configuration,
+        public TransactionController(IConfiguration configuration,
                                      IBankAccountRepo bankAccRepo,
                                      ITransactionRepo bankTrRepo,
                                      BankAccountPosting bankAccountPosting)
         {
-            _logger = logger;
+          
             _configuration = configuration;
             bankAccountRepo = bankAccRepo;
             bankTransactionRepo = bankTrRepo;
@@ -65,15 +64,16 @@ namespace BankingApplication.Controllers
 
             var bankAccount =  bankAccountRepo.GetAccount(bankAccountId);
 
-             if(bankTransaction.TransactionType == "1")
+             if(bankTransaction.TransactionType == TransactionType.Credit.GetHashCode().ToString())
                 bankAccount.TotalBalance += bankTransaction.Amount;
-             else if(bankTransaction.TransactionType == "2")
+             else if(bankTransaction.TransactionType == TransactionType.Debit.GetHashCode().ToString())
                 bankAccount.TotalBalance -= bankTransaction.Amount;
 
                
             
 
-            if (bankTransaction.Category == "2" || bankTransaction.Category == "3")
+            if (bankTransaction.Category == Category.Bank_Charges.GetHashCode().ToString() ||
+                bankTransaction.Category == Category.Bank_Interest.GetHashCode().ToString())
             {
                 bankAccountPosting.FirstName = bankTransaction.FirstName;
                 bankAccountPosting.MiddleName= bankTransaction.MiddleName;
