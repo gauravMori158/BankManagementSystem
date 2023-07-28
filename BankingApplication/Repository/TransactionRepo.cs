@@ -14,43 +14,43 @@ namespace BankingApplication.Repository
                 _context = context;
         }
 
-        public void AddTransaction(BankTransaction bankTransaction)
+        public async void AddTransaction(BankTransaction bankTransaction)
         {
-            _context.BankTransaction.Add(bankTransaction);
+            await _context.BankTransaction.AddAsync(bankTransaction);
   //          _context.SaveChanges();
         }
 
-        public void AddTransactionPosting(BankAccountPosting transactionPosting)
+        public async void AddTransactionPosting(BankAccountPosting transactionPosting)
         {
-            _context.BankAccountPosting.Add(transactionPosting);
+            await _context.BankAccountPosting.AddAsync(transactionPosting);
   //          _context.SaveChanges();
         }
 
-        public IList<PaymentMethod> GetPaymentMethod()
+        public async Task<IList<PaymentMethod>> GetPaymentMethod()
         {
-             var paymentMethod = _context.PaymentMethod.ToList();
+             var paymentMethod = await _context.PaymentMethod.ToListAsync();
              return paymentMethod; 
         }
 
-        public int TransactionCount()
+        public async Task<int> TransactionCount()
         {
-            return _context.BankTransaction.Count();
+            return await _context.BankTransaction.CountAsync();
         }
 
-        public void Save()
+        public   void Save()
         {
-            _context.SaveChanges(); 
+             _context.SaveChangesAsync(); 
         }
 
-        public IList<BankTransaction> GetBankTransactions()
+        public async Task<IList<BankTransaction>> GetBankTransactions()
         {
-            var transaction = _context.BankTransaction.Include(x => x.BankAccount).Include(x => x.PaymentMethod).ToList();
+            var transaction = await _context.BankTransaction.Include(x => x.BankAccount).Include(x => x.PaymentMethod).ToListAsync();
             return transaction;
         }
 
-        public IList<BankAccountPosting> GetBankAccountPostings()
+        public async Task<IList<BankAccountPosting>> GetBankAccountPostings()
         {
-            var ChargesList = _context.BankAccountPosting.Include(x => x.BankAccount).Include(x => x.PaymentMethod).ToList();
+            var ChargesList = await _context.BankAccountPosting.Include(x => x.BankAccount).Include(x => x.PaymentMethod).ToListAsync();
             return ChargesList;
         }
     }

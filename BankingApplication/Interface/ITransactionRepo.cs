@@ -4,14 +4,14 @@ namespace BankingApplication.Interface
 {
     public interface ITransactionRepo
     {
-        IList<PaymentMethod> GetPaymentMethod();
-        int TransactionCount();
+        Task<IList<PaymentMethod>> GetPaymentMethod();
+        Task<int> TransactionCount();
 
         void AddTransaction(BankTransaction bankTransaction);
         void AddTransactionPosting(BankAccountPosting transactionPosting);
 
-        IList<BankTransaction> GetBankTransactions();
-        IList<BankAccountPosting>GetBankAccountPostings();
+        Task<IList<BankTransaction>> GetBankTransactions();
+        Task<IList<BankAccountPosting>>GetBankAccountPostings();
 
         void Save();
     }

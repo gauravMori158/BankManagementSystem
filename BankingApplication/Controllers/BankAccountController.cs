@@ -14,28 +14,28 @@ namespace BankingApplication.Controllers
                 bankAccountRepo = repo;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var bankDetails =  bankAccountRepo.GetAllAccounts();
+            var bankDetails =  await bankAccountRepo.GetAllAccounts();
             return View(bankDetails);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             //For Bank Account View
-            ViewBag.AccountTypeId = new SelectList(bankAccountRepo.GetAccountType(), "AccountTypeId", "Name");
+            ViewBag.AccountTypeId = new SelectList(await bankAccountRepo.GetAccountType(), "AccountTypeId", "Name");
 
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(BankAccount bankAccount)
+        public async Task<IActionResult> Create(BankAccount bankAccount)
         {
             bankAccountRepo.CreateAccount(bankAccount);
 
             //For Bank Account View
-            ViewData["AccountTypeId"] = new SelectList(bankAccountRepo.GetAccountType(), "AccountTypeId", "Name");
+            ViewData["AccountTypeId"] = new SelectList(await bankAccountRepo.GetAccountType(), "AccountTypeId", "Name");
 
             return RedirectToAction("Index");
         }

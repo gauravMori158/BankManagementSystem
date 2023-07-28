@@ -13,6 +13,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(option=>option.UseSqlServer(
 builder.Services.AddScoped<IBankAccountRepo, BankAccountRepo>();
 builder.Services.AddScoped<ITransactionRepo, TransactionRepo>();
 builder.Services.AddScoped<BankAccountPosting>();
+builder.Services.AddAutoMapper(typeof(Program));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

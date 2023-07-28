@@ -4,10 +4,10 @@ namespace BankingApplication.Interface
 {
     public interface IBankAccountRepo
     {
-        IList<BankAccount> GetAllAccounts();
-        BankAccount GetAccount(int id);
+        Task<IList<BankAccount>>GetAllAccounts();
+        Task<BankAccount> GetAccount(int id);
 
-        IList<AccountType> GetAccountType();
+        Task<IList<AccountType>> GetAccountType();
 
         void CreateAccount(BankAccount bankAccount);
 

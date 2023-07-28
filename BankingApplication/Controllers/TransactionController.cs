@@ -1,10 +1,12 @@
-﻿using BankingApplication.Enums;
+﻿using AutoMapper;
+using BankingApplication.Enums;
 using BankingApplication.Interface;
 using BankingApplication.Models;
 using BankingApplication.Models.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 using System.Diagnostics;
 using System.Security;
 
@@ -17,29 +19,32 @@ namespace BankingApplication.Controllers
         private readonly IBankAccountRepo bankAccountRepo;
         private readonly ITransactionRepo bankTransactionRepo;
         private readonly BankAccountPosting bankAccountPosting;
+        private readonly IMapper _mapper;
 
         public TransactionController(IConfiguration configuration,
                                      IBankAccountRepo bankAccRepo,
                                      ITransactionRepo bankTrRepo,
-                                     BankAccountPosting bankAccountPosting)
+                                     BankAccountPosting bankAccountPosting,
+                                     IMapper mapper)
         {
           
             _configuration = configuration;
             bankAccountRepo = bankAccRepo;
             bankTransactionRepo = bankTrRepo;
             this.bankAccountPosting = bankAccountPosting;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult MoneyTransfer()
+        public async Task<IActionResult> MoneyTransfer()
         {
             var transactionLimits = Convert.ToInt32(_configuration["AppSettings:NumbersOfAccountTransaction"]);
 
 
-            ViewBag.PaymentMethodId = new SelectList(bankTransactionRepo.GetPaymentMethod(), "PaymentMethodId", "Name");
-            ViewBag.BankAccountId = new SelectList(bankAccountRepo.GetAllAccounts(), "BankAccountId", "FirstName");
+            ViewBag.PaymentMethodId =  new SelectList(await bankTransactionRepo.GetPaymentMethod(), "PaymentMethodId", "Name");
+            ViewBag.BankAccountId = new SelectList(await bankAccountRepo.GetAllAccounts(), "BankAccountId", "FirstName");
 
-            int AccountCount = bankTransactionRepo.TransactionCount();
+            int AccountCount = await bankTransactionRepo.TransactionCount();
 
             ViewBag.Flag = false;
             if (AccountCount >= transactionLimits)
@@ -50,19 +55,19 @@ namespace BankingApplication.Controllers
 
        
         [HttpPost]
-        public IActionResult MoneyTransfer(BankTransaction bankTransaction)
+        public async Task<IActionResult> MoneyTransfer(BankTransaction bankTransaction)
         {
             var TransactionLimits = Convert.ToInt32 (_configuration["AppSettings:NumbersOfAccountTransaction"]);
 
             // For Money Transaction View
-            ViewBag.BankAccountId = new SelectList(bankAccountRepo.GetAllAccounts(), "BankAccountId", "FirstName");
-            ViewBag.PaymentMethodId = new SelectList(bankTransactionRepo.GetPaymentMethod(), "PaymentMethodId", "Name");
+            ViewBag.BankAccountId = new SelectList( await bankAccountRepo.GetAllAccounts(), "BankAccountId", "FirstName");
+            ViewBag.PaymentMethodId = new SelectList(await bankTransactionRepo.GetPaymentMethod(), "PaymentMethodId", "Name");
 
             bankTransactionRepo.AddTransaction(bankTransaction);
 
             var bankAccountId = bankTransaction.BankAccountId;
 
-            var bankAccount =  bankAccountRepo.GetAccount(bankAccountId);
+            var bankAccount =  await bankAccountRepo.GetAccount(bankAccountId);
 
              if(bankTransaction.TransactionType == TransactionType.Credit.GetHashCode().ToString())
                 bankAccount.TotalBalance += bankTransaction.Amount;
@@ -75,18 +80,9 @@ namespace BankingApplication.Controllers
             if (bankTransaction.Category == Category.Bank_Charges.GetHashCode().ToString() ||
                 bankTransaction.Category == Category.Bank_Interest.GetHashCode().ToString())
             {
-                bankAccountPosting.FirstName = bankTransaction.FirstName;
-                bankAccountPosting.MiddleName= bankTransaction.MiddleName;
-                bankAccountPosting.LastName = bankTransaction.LastName;
-                bankAccountPosting.Transactiontype = bankTransaction.TransactionType;
-                bankAccountPosting.Category= bankTransaction.Category;
-                bankAccountPosting.Amount= bankTransaction.Amount;
-                bankAccountPosting.PaymentMethod= bankTransaction.PaymentMethod;
-                bankAccountPosting.PaymentMethodId= bankTransaction.PaymentMethodId;
-                bankAccountPosting.BankAccount=bankTransaction.BankAccount;
-                bankAccountPosting.BankAccountId=bankTransaction.BankAccountId;
+                var accpuntPosting = _mapper.Map<BankAccountPosting>(bankTransaction);
 
-                bankTransactionRepo.AddTransactionPosting(bankAccountPosting);
+                bankTransactionRepo.AddTransactionPosting(accpuntPosting);
             }
 
             bankTransactionRepo.Save();
@@ -97,17 +93,18 @@ namespace BankingApplication.Controllers
         }
 
         [HttpGet]
-        public IActionResult TransactionDetails()
+        public async Task<IActionResult> TransactionDetails()
         {
-            var transaction = bankTransactionRepo.GetBankTransactions();
+            var transaction = await bankTransactionRepo.GetBankTransactions();
+
             return View(transaction);
         }
 
 
         [HttpGet]
-        public IActionResult Charges()
+        public async Task<IActionResult> Charges()
         {
-            var ChargesList = bankTransactionRepo.GetBankAccountPostings();
+            var ChargesList = await bankTransactionRepo.GetBankAccountPostings();
             return View(ChargesList);
         }
 
