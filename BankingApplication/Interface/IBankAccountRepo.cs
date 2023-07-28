@@ -9,7 +9,7 @@ namespace BankingApplication.Interface
 
         Task<IList<AccountType>> GetAccountType();
 
-        void CreateAccount(BankAccount bankAccount);
+        Task CreateAccount(BankAccount bankAccount);
 
         
     }

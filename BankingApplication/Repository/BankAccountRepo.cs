@@ -18,16 +18,16 @@ namespace BankingApplication.Repository
                 
         }
 
-        public async void CreateAccount(BankAccount bankAccount)
+        public async Task CreateAccount(BankAccount bankAccount)
         {
                await _context.BankAccount.AddAsync(bankAccount);
-                _context.SaveChangesAsync();
+               await _context.SaveChangesAsync();
         }
 
         public async Task<BankAccount> GetAccount(int id)
         {
             var account = await _context.BankAccount.Include(x => x.AccountType).FirstOrDefaultAsync(x=>x.BankAccountId == id);
-            return account;
+            return  account;
         }
 
         public async  Task<IList<AccountType>> GetAccountType()

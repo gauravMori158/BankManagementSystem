@@ -37,9 +37,9 @@ namespace BankingApplication.Repository
             return await _context.BankTransaction.CountAsync();
         }
 
-        public   void Save()
+        public  async void Save()
         {
-             _context.SaveChangesAsync(); 
+              _context.SaveChanges(); 
         }
 
         public async Task<IList<BankTransaction>> GetBankTransactions()

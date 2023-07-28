@@ -84,6 +84,7 @@ namespace BankingApplication.Controllers
 
                 bankTransactionRepo.AddTransactionPosting(accpuntPosting);
             }
+            //Create Trigger On Insert on Table Bank Transaction 
 
             bankTransactionRepo.Save();
 

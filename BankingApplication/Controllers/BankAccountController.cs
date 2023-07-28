@@ -11,12 +11,12 @@ namespace BankingApplication.Controllers
         private readonly IBankAccountRepo bankAccountRepo;
         public BankAccountController(IBankAccountRepo repo)
         {
-                bankAccountRepo = repo;
+            bankAccountRepo = repo;
         }
 
         public async Task<IActionResult> Index()
         {
-            var bankDetails =  await bankAccountRepo.GetAllAccounts();
+            var bankDetails = await bankAccountRepo.GetAllAccounts();
             return View(bankDetails);
         }
 
@@ -32,10 +32,10 @@ namespace BankingApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(BankAccount bankAccount)
         {
-            bankAccountRepo.CreateAccount(bankAccount);
+            await bankAccountRepo.CreateAccount(bankAccount);
 
             //For Bank Account View
-            ViewData["AccountTypeId"] = new SelectList(await bankAccountRepo.GetAccountType(), "AccountTypeId", "Name");
+            ViewBag.AccountTypeId = new SelectList(await bankAccountRepo.GetAccountType(), "AccountTypeId", "Name");
 
             return RedirectToAction("Index");
         }
