@@ -86,7 +86,7 @@ namespace BankingApplication.Controllers
             }
             //Create Trigger On Insert on Table Bank Transaction 
 
-            bankTransactionRepo.Save();
+          await  bankTransactionRepo.Save();
 
 
             return  RedirectToAction("TransactionDetails");

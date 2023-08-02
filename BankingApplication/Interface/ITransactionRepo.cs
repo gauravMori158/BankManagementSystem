@@ -13,6 +13,6 @@ namespace BankingApplication.Interface
         Task<IList<BankTransaction>> GetBankTransactions();
         Task<IList<BankAccountPosting>>GetBankAccountPostings();
 
-        void Save();
+        Task Save();
     }
 }
